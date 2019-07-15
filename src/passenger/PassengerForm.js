@@ -5,6 +5,7 @@ import Stack from "@kiwicom/orbit-components/lib/Stack";
 import Illustration from "@kiwicom/orbit-components/lib/Illustration";
 import Header from "./Header";
 import Contact from "./Contact";
+import Payment from "./Payment";
 
 const Container = styled.div`
   max-width: 800px;
@@ -72,6 +73,7 @@ class PassengerForm extends React.Component {
         <button onClick={this.addPassenger} disabled={this.canAddPassanger()}>Add new passenger</button>
         <button disabled={this.state.passengers.some(p=>!p.isValid) || !this.state.contactValid}>Continue</button>
         <Illustration size="medium" name="Improve" />
+        <Payment validated={() => {}}/>
       </Container>
     );
   }
