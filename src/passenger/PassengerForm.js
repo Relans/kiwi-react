@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Stack from "@kiwicom/orbit-components/lib/Stack";
 import Illustration from "@kiwicom/orbit-components/lib/Illustration";
 import Header from "./Header";
-import Footer from "./Footer";
+import Contact from "./Contact";
 
 const Container = styled.div`
   max-width: 800px;
@@ -17,6 +17,7 @@ class PassengerForm extends React.Component {
     super(props);
     this.state = {
       passengers: [{ isValid: false }],
+      contactValid: false
     }
   }
 
@@ -49,6 +50,17 @@ class PassengerForm extends React.Component {
     this.setState({ passengers: newPassangers });
   }
 
+  contactValidated = (errors) => {
+    let allValid = true;
+    for (let key in errors) {
+      if (errors.hasOwnProperty(key) && errors[key]) {
+        allValid = false;
+        break;
+      }
+    }
+    this.setState({contactValid: allValid});
+  }
+  
   render() {
     return (
       <Container>
@@ -56,8 +68,9 @@ class PassengerForm extends React.Component {
         <Stack direction="column">
           {this.createPassengers()}
         </Stack>
+        <Contact validated={this.contactValidated}/>
         <button onClick={this.addPassenger} disabled={this.canAddPassanger()}>Add new passenger</button>
-        <Footer/>
+        <button disabled={this.state.passengers.some(p=>!p.isValid) || !this.state.contactValid}>Continue</button>
         <Illustration size="medium" name="Improve" />
       </Container>
     );
