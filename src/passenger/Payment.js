@@ -4,6 +4,7 @@ import moment from "moment";
 import DateInput from "../inputs/DateInput";
 import StringInput from "../inputs/StringInput";
 import Heading from "@kiwicom/orbit-components/lib/Heading";
+import MaskedInput from "../inputs/MaskedInput";
 
 class Payment extends React.Component {
 
@@ -60,14 +61,20 @@ class Payment extends React.Component {
     return value.diff(moment(), 'days') > 0;
   }
 
+  mask = (value) => {
+      var i = 0,
+          v = value.toString();
+      return "#### #### #### ####".replace(/#/g, _ => v[i] ? v[i++] : '').trim();
+  }
+
   render() {
     return (
       <Stack direction="column">
         <Heading>Payment information</Heading>
         <StringInput label="Cardholders Name" requiredMsg="Name is required" validator={this.validateName} errorMsg="Name can only contain valid characters [a-Z]"
           onChange={(state) => this.setState({ name: { ...this.state.name, ...state } })} />
-        <StringInput label="Card number" requiredMsg="Card number is required" validator={this.validateCard} errorMsg="Card number is invalid"
-          onChange={(state) => this.setState({ card: { ...this.state.card, ...state } })} />
+        <MaskedInput label="Card number" requiredMsg="Card number is required" validator={this.validateCard} errorMsg="Card number is invalid"
+          onChange={(state) => this.setState({ card: { ...this.state.card, ...state } })} mask={this.mask}/>
         <DateInput label="Expiration date" requiredMsg="Expiration date is required" validator={this.validateDate} errorMsg="Expiration date needs to be after the current date"
           onChange={(state) => this.setState({ date: { ...this.state.date, ...state } })} />
         <StringInput label="CVV" requiredMsg="Email is required" validator={this.valdateCVV} errorMsg="Invalid CVV"

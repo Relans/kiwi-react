@@ -21,7 +21,7 @@ class PassengerForm extends React.Component {
       passengers: [{ valid: false }],
       contact: { valid: false },
       payment: { valid: false },
-      current: 0
+      current: 1
     }
   }
 
