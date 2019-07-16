@@ -36,7 +36,7 @@ class StringInput extends React.Component {
   render() {
     return (
       <InputField label={this.props.label} size="small" value={this.state.value} error={this.state.error}
-        onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus} required />
+        onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus} required type={this.props.type || 'text'}/>
     );
   }
 }

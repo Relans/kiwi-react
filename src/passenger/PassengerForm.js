@@ -20,7 +20,8 @@ class PassengerForm extends React.Component {
     this.state = {
       passengers: [{ valid: false }],
       contact: { valid: false },
-      payment: { valid: false }
+      payment: { valid: false },
+      current: 0
     }
   }
 
@@ -46,30 +47,50 @@ class PassengerForm extends React.Component {
     this.setState({ payment: state });
   }
 
-  canAddPassanger = () => {
-    return this.state.passengers.length >= 9;
-  }
-
   addPassenger = () => {
     this.setState({ passengers: this.state.passengers.concat({ valid: false }) });
+  }
+
+  removePassanger = () => {
+    this.setState({ passengers: this.state.passengers.slice(0, -1) });
+  }
+
+  continue = () => {
+    this.setState({ current: 1 });
+  }
+
+  createPage = () => {
+    if (this.state.current === 0) {
+      return (
+        <Stack direction="column">
+          <Stack direction="column">
+            {this.createPassengers()}
+          </Stack>
+          <Contact onChange={this.contactChanged} />
+          <Stack direction="row">
+            <Button onClick={this.addPassenger} disabled={this.state.passengers.length >= 9}>Add new passenger</Button>
+            <Button onClick={this.removePassanger} disabled={this.state.passengers.length < 2}>Remove last passenger</Button>
+            <Button onClick={this.continue}
+              disabled={this.state.passengers.some(p => !p.valid) || !this.state.contact.valid}>Continue</Button>
+          </Stack>
+        </Stack>
+      );
+    } else {
+      return (
+        <Stack direction="column">
+          <Payment onChange={this.paymentChanged} />
+          <Button disabled={!this.state.payment.valid}>Submit</Button>
+        </Stack>
+      );
+    }
   }
 
   render() {
     return (
       <Container>
-        <Header />-
-        <Stack direction="column">
-          <Stack direction="column">
-            {this.createPassengers()}
-          </Stack>
-          <Contact onChange={this.contactChanged}/>
-          <Stack direction="row">
-            <Button onClick={this.addPassenger} disabled={this.canAddPassanger()}>Add new passenger</Button>
-            <Button disabled={this.state.passengers.some(p => !p.valid) || !this.state.contact.valid}>Continue</Button>
-          </Stack>
-        </Stack>
+        <Header />
+        {this.createPage()}
         <Illustration size="medium" name="Improve" />
-        <Payment onChange={this.paymentChanged}/>
       </Container>
     );
   }

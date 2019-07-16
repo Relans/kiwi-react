@@ -71,7 +71,7 @@ class Payment extends React.Component {
         <DateInput label="Expiration date" requiredMsg="Expiration date is required" validator={this.validateDate} errorMsg="Expiration date needs to be after the current date"
           onChange={(state) => this.setState({ date: { ...this.state.date, ...state } })} />
         <StringInput label="CVV" requiredMsg="Email is required" validator={this.valdateCVV} errorMsg="Invalid CVV"
-          onChange={(state) => this.setState({ cvv: { ...this.state.cvv, ...state } })} />
+          onChange={(state) => this.setState({ cvv: { ...this.state.cvv, ...state } })} type="password"/>
       </Stack>
     );
   }
