@@ -18,11 +18,15 @@ class StringInput extends React.Component {
 
   onBlur = (event) => {
     const value = event.target.value;
+    let valid = true;
     if (!value || !value.trim()) {
       this.setState({ error: <div>{this.props.requiredMsg}</div> });
+      valid = false;
     } else if (this.props.validator && !this.props.validator(value)) {
       this.setState({ error: <div>{this.props.errorMsg}</div> });
+      valid = false;
     }
+    this.props.onChange({ value, valid });
   }
 
   onFocus = () => {

@@ -45,13 +45,18 @@ class DateInput extends React.Component {
 
   onBlur = (event) => {
     const date = this.getDateFromEvent(event).date;
-    if (!this) {
+    let valid = true;
+    if (!date) {
       this.setState({ error: <div>{this.props.requiredMsg}</div> });
+      valid = false;
     } else if (!date.isValid()) {
       this.setState({ error: <div>Invalid date</div> });
+      valid = false;
     } else if (!this.props.validator(date)) {
       this.setState({ error: <div>{this.props.errorMsg}</div> });
+      valid = false;
     }
+    this.props.onChange({ value: date, valid });
   }
 
   onFocus = () => {
