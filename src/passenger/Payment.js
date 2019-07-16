@@ -121,19 +121,4 @@ class Payment extends React.Component {
   }
 }
 
-
-
-function mask(value){
-  const str = value.toString().replace(" ","");
-  let result = [];
-  for(let i=0; i<str.length; i++){
-    if(i % 4 === 0){
-      result.push(" ");
-    }
-    result.push(str[i]);
-  }
-
-  return result.join("").trim();
-}
-
 export default Payment;
