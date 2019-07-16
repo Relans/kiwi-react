@@ -3,6 +3,7 @@ import Passenger from "./Passenger";
 import styled from "styled-components";
 import Stack from "@kiwicom/orbit-components/lib/Stack";
 import Illustration from "@kiwicom/orbit-components/lib/Illustration";
+import Button from "@kiwicom/orbit-components/lib/Button";
 import Header from "./Header";
 import Contact from "./Contact";
 import Payment from "./Payment";
@@ -25,7 +26,7 @@ class PassengerForm extends React.Component {
   createPassengers = () => {
     let passengers = [];
     for (let i = 0; i < this.state.passengers.length; i++) {
-      passengers.push(<Passenger key={i} validated={(errors) => this.passengerValidated(i, errors)} />)
+      passengers.push(<Passenger key={i} />);
     }
     return passengers;
   }
@@ -38,42 +39,22 @@ class PassengerForm extends React.Component {
     this.setState({ passengers: this.state.passengers.concat({ isValid: false }) });
   }
 
-  passengerValidated = (id, errors) => {
-    let allValid = true;
-    for (let key in errors) {
-      if (errors.hasOwnProperty(key) && errors[key]) {
-        allValid = false;
-        break;
-      }
-    }
-    let newPassangers = this.state.passengers.slice();
-    newPassangers[id].isValid = allValid;
-    this.setState({ passengers: newPassangers });
-  }
-
-  contactValidated = (errors) => {
-    let allValid = true;
-    for (let key in errors) {
-      if (errors.hasOwnProperty(key) && errors[key]) {
-        allValid = false;
-        break;
-      }
-    }
-    this.setState({contactValid: allValid});
-  }
-  
   render() {
     return (
       <Container>
         <Header />-
         <Stack direction="column">
-          {this.createPassengers()}
+          <Stack direction="column">
+            {this.createPassengers()}
+          </Stack>
+          <Contact />
+          <Stack direction="row">
+            <Button onClick={this.addPassenger} disabled={this.canAddPassanger()}>Add new passenger</Button>
+            <Button disabled={this.state.passengers.some(p => !p.isValid) || !this.state.contactValid}>Continue</Button>
+          </Stack>
         </Stack>
-        <Contact validated={this.contactValidated}/>
-        <button onClick={this.addPassenger} disabled={this.canAddPassanger()}>Add new passenger</button>
-        <button disabled={this.state.passengers.some(p=>!p.isValid) || !this.state.contactValid}>Continue</button>
         <Illustration size="medium" name="Improve" />
-        <Payment validated={() => {}}/>
+        <Payment validated={() => { }} />
       </Container>
     );
   }
