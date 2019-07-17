@@ -18,3 +18,5 @@ export const MONTHS = [
   { value: 10, label: "November" },
   { value: 11, label: "December" },
 ];
+
+export const MAX_PASSANGER = 9;

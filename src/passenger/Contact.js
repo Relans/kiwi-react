@@ -22,15 +22,15 @@ class Contact extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       let valid = true;
-      for(let key in this.state){
-        if(this.state.hasOwnProperty(key)){
-          if(!this.state[key].valid){
+      for (let key in this.state) {
+        if (this.state.hasOwnProperty(key)) {
+          if (!this.state[key].valid) {
             valid = false;
             break;
           }
         }
       }
-      this.props.onChange({...this.state, valid});
+      this.props.onChange({ ...this.state, valid });
     }
   }
 
@@ -42,14 +42,22 @@ class Contact extends React.Component {
     return /^[0-9 ]+$/.test(value);
   }
 
+  emailChanged = (inputstate) => {
+    this.setState({ email: { ...this.state.email, ...inputstate } });
+  }
+
+  phoneChanged = (inputstate) => {
+    this.setState({ phone: { ...this.state.phone, ...inputstate } });
+  }
+
   render() {
     return (
       <Stack direction="column">
         <Heading>Contact information</Heading>
-        <StringInput label="Email adress" requiredMsg="Email is required" validator={this.validateEmail} errorMsg="Invalid email"
-          onChange={(state) => this.setState({ email: { ...this.state.email, ...state } })} />
-        <StringInput label="Phone" requiredMsg="Phone is required" validator={this.validatePhone} errorMsg="Invalid phone number"
-          onChange={(state) => this.setState({ phone: { ...this.state.phone, ...state } })} />
+        <StringInput label="Email adress" onChange={this.emailChanged} validator={this.validateEmail}
+          requiredMsg="Email is required" errorMsg="Invalid email" />
+        <StringInput label="Phone" onChange={this.phoneChanged} validator={this.validatePhone}
+          requiredMsg="Phone is required" errorMsg="Invalid phone number" />
       </Stack>
     );
   }

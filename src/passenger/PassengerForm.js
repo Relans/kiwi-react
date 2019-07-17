@@ -7,6 +7,7 @@ import Button from "@kiwicom/orbit-components/lib/Button";
 import Header from "./Header";
 import Contact from "./Contact";
 import Payment from "./Payment";
+import { MAX_PASSANGER } from "./constants";
 
 const Container = styled.div`
   max-width: 800px;
@@ -21,54 +22,63 @@ class PassengerForm extends React.Component {
       passengers: [{ valid: false }],
       contact: { valid: false },
       payment: { valid: false },
-      current: 1
+      currentStep: 0
     }
   }
 
-  createPassengers = () => {
-    let passengers = [];
-    for (let i = 0; i < this.state.passengers.length; i++) {
-      passengers.push(<Passenger key={i} onChange={(state) => this.passengerChanged(i, state)} />);
-    }
-    return passengers;
+  rendersPassengers = () => {
+    return this.state.passengers.map((_, i) =>
+      <Passenger key={i} onChange={this.passengerChanged} index={i} />)
   }
 
-  passengerChanged = (index, state) => {
-    let newPassangers = this.state.passengers.slice();
-    newPassangers[index] = state;
-    this.setState({ passengers: newPassangers });
+  passengerChanged = (index, passengerState) => {
+    this.setState((state) => {
+      let newPassengers = state.passengers.slice();
+      newPassengers[index] = passengerState;
+      return {
+        passengers: newPassengers
+      }
+    });
   }
 
-  contactChanged = (state) => {
-    this.setState({ contact: state });
+  contactChanged = (contactState) => {
+    this.setState({ contact: contactState });
   }
 
-  paymentChanged = (state) => {
-    this.setState({ payment: state });
+  paymentChanged = (paymentState) => {
+    this.setState({ payment: paymentState });
   }
 
   addPassenger = () => {
-    this.setState({ passengers: this.state.passengers.concat({ valid: false }) });
+    this.setState((state) => {
+      return {
+        passengers: state.passengers.concat({ valid: false })
+      }
+    });
   }
 
   removePassanger = () => {
-    this.setState({ passengers: this.state.passengers.slice(0, -1) });
+    this.setState((state) => {
+      return {
+        passengers: state.passengers.slice(0, -1)
+      }
+    });
   }
 
   continue = () => {
-    this.setState({ current: 1 });
+    this.setState({ currentStep: 1 });
   }
 
   createPage = () => {
-    if (this.state.current === 0) {
+    if (this.state.currentStep === 0) {
       return (
         <Stack direction="column">
           <Stack direction="column">
-            {this.createPassengers()}
+            {this.rendersPassengers()}
           </Stack>
           <Contact onChange={this.contactChanged} />
           <Stack direction="row">
-            <Button onClick={this.addPassenger} disabled={this.state.passengers.length >= 9}>Add new passenger</Button>
+            <Button onClick={this.addPassenger} disabled={this.state.passengers.length >= MAX_PASSANGER}>Add new passenger</Button>
             <Button onClick={this.removePassanger} disabled={this.state.passengers.length < 2}>Remove last passenger</Button>
             <Button onClick={this.continue}
               disabled={this.state.passengers.some(p => !p.valid) || !this.state.contact.valid}>Continue</Button>

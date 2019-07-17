@@ -17,7 +17,6 @@ class StringInput extends React.Component {
   }
 
   onBlur = (event) => {
-    debugger
     const value = event.target.value.replace(/ /g,'');
     let valid = true;
     if (!value) {

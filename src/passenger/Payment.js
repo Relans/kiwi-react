@@ -62,7 +62,7 @@ class Payment extends React.Component {
   }
 
   mask = (value) => {
-      var i = 0,
+      let i = 0,
           v = value.toString();
       return "#### #### #### ####".replace(/#/g, _ => v[i] ? v[i++] : '').trim();
   }
